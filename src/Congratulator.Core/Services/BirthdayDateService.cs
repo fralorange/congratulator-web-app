@@ -67,6 +67,8 @@ namespace Congratulator.Core.Services
 
         public void AddBirthdayDate(AddBirthdayDateDto date)
         {
+            if (_repository.GetBirthdays().Birthdays.Any(bd => bd.Id == date.Id))
+                return;
             var newDate = new BirthdayDate()
             {
                 Id = date.Id,
