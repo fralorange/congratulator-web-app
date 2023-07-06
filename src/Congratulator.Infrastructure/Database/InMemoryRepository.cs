@@ -79,13 +79,13 @@ namespace Congratulator.Infrastructure.Database
 
         public void EditBirthdayDate(BirthdayDate date)
         {
-            throw new NotImplementedException();
+            int index = _birthdayDateCollection.FindIndex(bd => bd.Id == date.Id);
+            _birthdayDateCollection[index] = date;
         }
-
 
         public void RemoveBirthdayDate(BirthdayDate date)
         {
-            throw new NotImplementedException();
+            _birthdayDateCollection.RemoveAll(bd => bd.Id == date.Id);
         }
     }
 }

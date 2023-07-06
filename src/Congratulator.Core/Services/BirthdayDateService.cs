@@ -49,9 +49,12 @@ namespace Congratulator.Core.Services
             };
         }
 
-        public BirthdayDateDto GetBirthdayDateById(int id)
+        public BirthdayDateDto? GetBirthdayDateById(int id)
         {
             var date = _repository.GetBirthdayDateById(id);
+
+            if (date == null)
+                return null;
 
             return new BirthdayDateDto()
             {
@@ -75,15 +78,37 @@ namespace Congratulator.Core.Services
             _repository.AddBirthdayDate(newDate);
         }
 
-        public void EditBirthdayDate(int id, EditBirthdayDateDto date)
+        public void EditBirthdayDate(EditBirthdayDateDto date)
         {
-            throw new NotImplementedException();
+            var updatedDate = new BirthdayDate()
+            {
+                Id = date.Id,
+                FirstName = date.FirstName,
+                LastName = date.LastName,
+                BirthDate = date.BirthDate
+            };
+
+            _repository.EditBirthdayDate(updatedDate);
         }
 
 
-        public void RemoveBirthdayDate(int id)
+        public bool RemoveBirthdayDate(int id)
         {
-            throw new NotImplementedException();
+            var dateDto = GetBirthdayDateById(id);
+
+            if (dateDto == null)
+                return false;
+
+            var date = new BirthdayDate()
+            {
+                Id = dateDto.Id,
+                FirstName = dateDto.FirstName,
+                LastName = dateDto.LastName,
+                BirthDate = dateDto.BirthDate
+            };
+
+            _repository.RemoveBirthdayDate(date);
+            return true;
         }
     }
 }
