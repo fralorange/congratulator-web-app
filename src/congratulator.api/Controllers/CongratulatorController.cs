@@ -56,9 +56,17 @@ namespace Congratulator.Api.Controllers
 
         [HttpPut]
         [Route("api/birthdaydate/{id}")]
-        public IActionResult EditBirthdayDate(int id, [FromBody] BirthdayDateDto editedBirthdayDate)
+        public IActionResult EditBirthdayDate(int id, [FromBody] EditBirthdayDateDto editedBirthdayDateDto)
         {
-            throw new NotImplementedException();
+            if (editedBirthdayDateDto == null || id != editedBirthdayDateDto.Id)
+                return BadRequest();
+
+            if (GetBirthdayDateById(editedBirthdayDateDto.Id) == null)
+                return NotFound();
+
+            _dateService.EditBirthdayDate(editedBirthdayDateDto);
+
+            return NoContent();
         }
     }
 }

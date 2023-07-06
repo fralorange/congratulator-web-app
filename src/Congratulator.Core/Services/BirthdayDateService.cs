@@ -78,9 +78,17 @@ namespace Congratulator.Core.Services
             _repository.AddBirthdayDate(newDate);
         }
 
-        public void EditBirthdayDate(int id, EditBirthdayDateDto date)
+        public void EditBirthdayDate(EditBirthdayDateDto date)
         {
-            throw new NotImplementedException();
+            var updatedDate = new BirthdayDate()
+            {
+                Id = date.Id,
+                FirstName = date.FirstName,
+                LastName = date.LastName,
+                BirthDate = date.BirthDate
+            };
+
+            _repository.EditBirthdayDate(updatedDate);
         }
 
 
