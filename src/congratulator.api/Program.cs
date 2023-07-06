@@ -27,6 +27,10 @@ namespace Congratulator.Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            } else
+            {
+                app.UseDefaultFiles();
+                app.UseStaticFiles();
             }
 
             app.UseHttpsRedirection();
