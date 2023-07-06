@@ -85,7 +85,7 @@ namespace Congratulator.Infrastructure.Database
 
         public void RemoveBirthdayDate(BirthdayDate date)
         {
-            throw new NotImplementedException();
+            _birthdayDateCollection.RemoveAll(bd => bd.Id == date.Id);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Congratulator.Api.Controllers
 
         [HttpGet]
         [Route("api/birthdaydate/{id}")]
-        public BirthdayDateDto GetBirthdayDateById(int id)
+        public BirthdayDateDto? GetBirthdayDateById(int id)
         {
             return _dateService.GetBirthdayDateById(id);
         }
@@ -48,7 +48,10 @@ namespace Congratulator.Api.Controllers
         [Route("api/birthdaydate/{id}")]
         public IActionResult RemoveBirthdayDate(int id)
         {
-            throw new NotImplementedException();
+            bool answer = _dateService.RemoveBirthdayDate(id);
+            if (!answer)
+                return NotFound();
+            return NoContent();
         }
 
         [HttpPut]
