@@ -1,4 +1,4 @@
-﻿namespace Congratulator.Api.Entities
+﻿namespace Congratulator.Core.Entities
 {
     public class BirthdayDateCollection
     {

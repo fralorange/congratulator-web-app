@@ -1,69 +1,59 @@
-﻿using Congratulator.Api.Entities;
+﻿using Congratulator.Core.Abstractions;
+using Congratulator.Core.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace congratulator.api.Controllers
+namespace Congratulator.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class CongratulatorController : ControllerBase
     {
+        private readonly IBirthdayDateService _dateService;
+
+        public CongratulatorController(IBirthdayDateService dateService) => _dateService = dateService;
+
         [HttpGet]
-        [Route("api/all")]
-        public BirthdayDateCollection GetBirthdays()
+        [Route("api/birthdaydate")]
+        public BirthdayDateCollectionDto GetBirthdays()
         {
-            return new BirthdayDateCollection()
-            {
-                Birthdays = new[]
-                {
-                    new BirthdayDate()
-                    {
-                        Id = 1,
-                        FirstName = "Alexander",
-                        LastName = "Makedonsky",
-                        BirthDate = new DateOnly(356, 10, 6)
-                    },
-                    new BirthdayDate()
-                    {
-                        Id = 2,
-                        FirstName = "Alexander",
-                        LastName = "Pushkin",
-                        BirthDate = new DateOnly(1799, 6, 6)
-                    },
-                    new BirthdayDate()
-                    {
-                        Id = 3,
-                        FirstName = "Sergey",
-                        LastName = "Esenin",
-                        BirthDate = new DateOnly(1895, 10, 3)
-                    }
-                }
-            };
+            return _dateService.GetBirthdays();
         }
 
         [HttpGet]
-        [Route("api/coming")]
-        public BirthdayDateCollection GetComingBirthdays()
+        [Route("api/birthdaydate/coming")]
+        public BirthdayDateCollectionDto GetComingBirthdays()
         {
-            throw new NotImplementedException();
+            return _dateService.GetComingBirthdays();
+        }
+
+        [HttpGet]
+        [Route("api/birthdaydate/{id}")]
+        public BirthdayDateDto GetBirthdayDateById(int id)
+        {
+            return _dateService.GetBirthdayDateById(id);
         }
 
         [HttpPost]
-        [Route("api/add")]
-        public IActionResult AddBirthdayDate([FromBody] BirthdayDate birthdayDate)
+        [Route("api/birthdaydate")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult AddBirthdayDate([FromBody] AddBirthdayDateDto addBirthdayDateDto)
         {
-            throw new NotImplementedException();
+            _dateService.AddBirthdayDate(addBirthdayDateDto);
+
+            return CreatedAtAction(nameof(GetBirthdayDateById), new { id = addBirthdayDateDto.Id }, addBirthdayDateDto);
         }
 
         [HttpDelete]
-        [Route("api/delete/{id}")]
+        [Route("api/birthdaydate/{id}")]
         public IActionResult RemoveBirthdayDate(int id)
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        [Route("api/edit/{id}")]
-        public IActionResult EditBirthdayDate(int id, [FromBody] BirthdayDate editedBirthdayDate)
+        [Route("api/birthdaydate/{id}")]
+        public IActionResult EditBirthdayDate(int id, [FromBody] BirthdayDateDto editedBirthdayDate)
         {
             throw new NotImplementedException();
         }
