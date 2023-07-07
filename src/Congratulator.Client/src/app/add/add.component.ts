@@ -4,17 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BirthdayDate } from '../core/birthday-date.interface';
 
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
-export class EditComponent implements OnInit {
+export class AddComponent implements OnInit {
   id: number | undefined;
   birthdayDate: BirthdayDate = {
-      id: 0,
-      firstName: '',
-      lastName: '',
-      birthDate: new Date()
+    id: 0,
+    firstName: '',
+    lastName: '',
+    birthDate: new Date()
   }
   constructor(private _http: HttpClient, private _route: ActivatedRoute, private _router: Router) { }
 
@@ -28,8 +28,7 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit() {
-    this._http.put<void>(`Congratulator/api/birthdaydate/${this.id}`, this.birthdayDate).subscribe(() =>
-    {
+    this._http.post<void>('Congratulator/api/birthdaydate', this.birthdayDate).subscribe(() => {
       this._router.navigate(["/main"]);
     },
       error => {

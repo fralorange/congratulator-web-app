@@ -1,0 +1,20 @@
+<h2>Add acquaintance's birthday date</h2>
+
+<form #editForm="ngForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="firstName">First name:</label>
+    <input type="text" id="firstName" name="firstName" [(ngModel)]="birthdayDate.firstName" required />
+  </div>
+
+  <div>
+    <label for="lastName">Last name:</label>
+    <input type="text" id="lastName" name="lastName" [(ngModel)]="birthdayDate.lastName" required />
+  </div>
+
+  <div>
+    <label for="birthDate">Birthday:</label>
+    <input type="date" id="birthDate" name="birthDate" [(ngModel)]="birthdayDate.birthDate" required />
+  </div>
+
+  <button type="submit">Save</button>
+</form>
