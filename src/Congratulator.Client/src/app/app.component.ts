@@ -7,17 +7,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  private readonly _apiUrl = 'Congratulator/api/birthdaydate';
   public birthdayDates?: BirthdayDate[];
 
   constructor(private http: HttpClient) {
-    this.loadData("Congratulator/api/birthdaydate");
+    this.loadData(this._apiUrl);
   }
 
   title = 'Congratulator.Client';
 
+  private loadData(path: string) {
+    this.http.get<BirthdayDateCollection>(path).subscribe(result => {
+      this.birthdayDates = result.birthdays;
+    }, error => console.error(error));
+  }
+
   onCheckboxChange(event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
-    let path = "Congratulator/api/birthdaydate";
+    let path = this._apiUrl;
 
     if (checked) {
       path = path.concat("/coming");
@@ -26,11 +33,17 @@ export class AppComponent {
     this.loadData(path);
   }
 
-  private loadData(path: string) {
-    this.http.get<BirthdayDateCollection>(path).subscribe(result => {
-      this.birthdayDates = result.birthdays;
-    }, error => console.error(error));
+  onButtonClick(id: number) {
+    this.http.delete<void>(`${this._apiUrl}/${id}`).subscribe(() =>
+    {
+      this.loadData(this._apiUrl);
+    },
+    error => {
+      console.error(error);
+      alert("Don't press 'Delete' button so fast");
+    });
   }
+
 }
 
 interface BirthdayDate {

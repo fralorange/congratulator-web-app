@@ -16,6 +16,7 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Birthday date</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
             <td>{{ birthdayDate.firstName }}</td>
             <td>{{ birthdayDate.lastName }}</td>
             <td>{{ birthdayDate.birthDate }}</td>
+            <td><button type="button" (click)="onButtonClick(birthdayDate.id)">Delete</button></td>
         </tr>
     </tbody>
 </table>
