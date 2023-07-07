@@ -9,13 +9,28 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public birthdayDates?: BirthdayDate[];
 
-  constructor(http: HttpClient) {
-    http.get<BirthdayDateCollection>('Congratulator/api/birthdaydate').subscribe(result => {
-      this.birthdayDates = result.birthdays;
-    }, error => console.error(error));
+  constructor(private http: HttpClient) {
+    this.loadData("Congratulator/api/birthdaydate");
   }
 
   title = 'Congratulator.Client';
+
+  onCheckboxChange(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    let path = "Congratulator/api/birthdaydate";
+
+    if (checked) {
+      path = path.concat("/coming");
+    }
+
+    this.loadData(path);
+  }
+
+  private loadData(path: string) {
+    this.http.get<BirthdayDateCollection>(path).subscribe(result => {
+      this.birthdayDates = result.birthdays;
+    }, error => console.error(error));
+  }
 }
 
 interface BirthdayDate {

@@ -4,6 +4,11 @@
 
 <p *ngIf="!birthdayDates"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
 
+<label>
+  <input type="checkbox" (change)="onCheckboxChange($event)" />
+  Show today's and upcoming birthdays
+</label>
+
 <table *ngIf="birthdayDates">
     <thead>
         <tr>
