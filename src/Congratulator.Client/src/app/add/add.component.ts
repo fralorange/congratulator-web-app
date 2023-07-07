@@ -28,7 +28,12 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
-    this._http.post<void>('Congratulator/api/birthdaydate', this.birthdayDate).subscribe(() => {
+    let birthdayDateString = {
+      ...this.birthdayDate,
+      birthDate: this.birthdayDate.birthDate.toLocaleDateString("en-CA")
+    };
+
+    this._http.post<void>('Congratulator/api/birthdaydate', birthdayDateString).subscribe(() => {
       this._router.navigate(["/main"]);
     },
       error => {

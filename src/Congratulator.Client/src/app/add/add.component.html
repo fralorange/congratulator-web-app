@@ -1,20 +1,33 @@
-<h2>Add acquaintance's birthday date</h2>
+<<h3 class="pb-3" style="text-align:center">Add acquaintance's birthday date</h3>
 
-<form #editForm="ngForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="firstName">First name:</label>
-    <input type="text" id="firstName" name="firstName" [(ngModel)]="birthdayDate.firstName" required />
-  </div>
+<div class="container col-lg-5 p-3 border">
+  <form #editForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="mb-2">
+      <label for="firstName" class="form-label">First name:</label>
+      <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="birthdayDate.firstName" required />
+    </div>
 
-  <div>
-    <label for="lastName">Last name:</label>
-    <input type="text" id="lastName" name="lastName" [(ngModel)]="birthdayDate.lastName" required />
-  </div>
+    <div class="mb-2">
+      <label for="lastName" class="form-label">Last name:</label>
+      <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="birthdayDate.lastName" required />
+    </div>
 
-  <div>
-    <label for="birthDate">Birthday:</label>
-    <input type="date" id="birthDate" name="birthDate" [(ngModel)]="birthdayDate.birthDate" required />
-  </div>
+    <div class="my-2">
+      <label for="birthDate" class="form-label">Birthday:</label>
+      <div id="datepicker-container"></div>
+      <input type="text"
+             id="birthDate"
+             name="birthDate"
+             class="form-control"
+             bsDatepicker
+             placement="right"
+             [bsConfig]="{ adaptivePosition: true, containerClass: 'theme-dark-blue', dateInputFormat: 'DD.MM.YYYY' }"
+             [(ngModel)]="birthdayDate.birthDate"
+             required />
+    </div>
 
-  <button type="submit">Save</button>
-</form>
+    <div class="d-grid gap-6 col-3 mt-4">
+      <button type="submit" class="btn btn-outline-primary">Save</button>
+    </div>
+  </form>
+</div>

@@ -28,7 +28,12 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit() {
-    this._http.put<void>(`Congratulator/api/birthdaydate/${this.id}`, this.birthdayDate).subscribe(() =>
+    let birthdayDateString = {
+      ...this.birthdayDate,
+      birthDate: this.birthdayDate.birthDate.toLocaleDateString("en-CA")
+    };
+
+    this._http.put<void>(`Congratulator/api/birthdaydate/${this.id}`, birthdayDateString).subscribe(() =>
     {
       this._router.navigate(["/main"]);
     },
