@@ -14,7 +14,7 @@ namespace Congratulator.Api
             // Add services to the container.
             builder.Services.AddControllers();
             // Implement Dependency Injection
-            builder.Services.AddSingleton<IBirthdayDateRepository, InMemoryRepository>();
+            builder.Services.AddSingleton<IBirthdayDateRepository, EntityFrameworkRepository>();
             builder.Services.AddScoped<IBirthdayDateService, BirthdayDateService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

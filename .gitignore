@@ -480,3 +480,4 @@ Thumbs.db
 # Angular cache files
 src/Congratulator.Client/.angular/cache/
 
+src/Congratulator.Infrastructure/Migrations/
