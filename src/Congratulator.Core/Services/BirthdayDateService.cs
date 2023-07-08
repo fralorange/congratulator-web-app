@@ -69,7 +69,7 @@ namespace Congratulator.Core.Services
         {
             if (_repository.GetBirthdays().Birthdays.Any(bd => bd.Id == date.Id))
                 return;
-            date.Id = GetBirthdays().Birthdays.Max(bd => bd.Id) + 1;
+            //date.Id = GetBirthdays().Birthdays.Max(bd => bd.Id) + 1;
             var newDate = new BirthdayDate()
             {
                 Id = date.Id,
