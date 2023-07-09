@@ -12,19 +12,19 @@
     </label>
   </div>
 
-  <table class="table table-striped table-hover table-bordered" *ngIf="birthdayDates">
+  <table class="table table-striped table-hover table-bordered" *ngIf="birthdayDates" matSort (matSortChange)="sortData($event)">
     <thead class="text-center">
       <tr>
-        <th scope="col">Id</th>
-        <th scope="col">First name</th>
-        <th scope="col">Last name</th>
-        <th scope="col">Birthday date</th>
+        <th scope="col" mat-sort-header="id">Id</th>
+        <th scope="col" mat-sort-header="firstName">First name</th>
+        <th scope="col" mat-sort-header="lastName">Last name</th>
+        <th scope="col" mat-sort-header="birthDate">Birthday date</th>
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody class="text-center">
-      <tr *ngFor="let birthdayDate of birthdayDates">
+      <tr *ngFor="let birthdayDate of sortedDates">
         <td>{{ birthdayDate.id }}</td>
         <td>{{ birthdayDate.firstName }}</td>
         <td>{{ birthdayDate.lastName }}</td>
