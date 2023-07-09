@@ -5,10 +5,18 @@
     <button type="button" class="btn btn-outline-primary" [routerLink]="['/add']">Add new</button>
   </div>
 
-  <div class="form-check" *ngIf="birthdayDates">
+  <div class="form-check form-inline" *ngIf="birthdayDates">
+    <label class="form-check-label me-5">
+      <input class="form-check-input" type="radio" name="option" value="coming" (change)="onRadioboxchange($event)" />
+      Show upcoming
+    </label>
+    <label class="form-check-label me-5">
+      <input class="form-check-input" type="radio" name="option" value="belated" (change)="onRadioboxchange($event)" />
+      Show belated
+    </label>
     <label class="form-check-label">
-      <input class="form-check-input" type="checkbox" (change)="onCheckboxChange($event)" />
-      Show today's and upcoming birthdays
+      <input class="form-check-input" type="radio" name="option" value="all" (change)="onRadioboxchange($event)" />
+      Show all
     </label>
   </div>
 

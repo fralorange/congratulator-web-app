@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Sort, MatSortModule } from '@angular/material/sort';
 import { BirthdayDate } from '../core/birthday-date.interface';
 import { BirthdayDateCollection } from '../core/birthday-date-collection.interface';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -18,10 +19,13 @@ export class MainComponent {
     this.loadData(this._apiUrl);
   }
 
-  public loadData(path: string) {
+  public loadData(path: string, callback?: () => void) {
     this._http.get<BirthdayDateCollection>(path).subscribe(result => {
       this.birthdayDates = result.birthdays;
       this.sortedDates = this.birthdayDates.slice();
+      if (callback) {
+        callback();
+      }
     }, error => console.error(error));
   }
 
@@ -49,15 +53,29 @@ export class MainComponent {
     });
   }
 
-  public onCheckboxChange(event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
+  public onRadioboxchange(event: Event) {
+    const option = (event.target as HTMLInputElement).value;
     let path = this._apiUrl;
 
-    if (checked) {
-      path = path.concat("/coming");
+    switch (option) {
+      case 'all':
+        this.loadData(path);
+        break;
+      case 'coming':
+        this.loadData(path.concat("/coming"));
+        break;
+      case 'belated':
+        this.loadData(path, () => {
+          const today = new Date();
+          this.birthdayDates = this.birthdayDates?.filter(date => {
+            const birthDate = new Date(date.birthDate);
+            birthDate.setFullYear(today.getFullYear())
+            return birthDate < today;
+          });
+          this.sortedDates = this.birthdayDates?.slice();
+        });
+        break;
     }
-
-    this.loadData(path);
   }
 
   public onButtonClick(id: number) {
