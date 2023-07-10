@@ -14,13 +14,15 @@ import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 })
 export class MainComponent {
   private readonly _apiUrl = 'Congratulator/api/';
+  private _enterTimer: any;
+  private _leaveTimer: any;
+  private _debounce: boolean = false;
   public birthdayDates?: BirthdayDate[];
   public sortedDates?: BirthdayDate[];
   public images?: Image[];
   public imageSrc: string = '';
   public imageVisible = false;
   public imageCoords: [number, number] = [0, 0];
-  public timer: any;
 
   constructor(private _http: HttpClient) {
     this.loadData('', true);
@@ -101,7 +103,11 @@ export class MainComponent {
   }
 
   public onMouseEnter(event: MouseEvent, id: number) {
-    this.timer = setTimeout(() => {
+    let delay = this._debounce ? 0 : 500;
+    clearTimeout(this._leaveTimer);
+    this._enterTimer = setTimeout(() => {
+      this._debounce = true;
+
       let imageString = this.images?.find(img => img.birthdayId == id)?.img;
       let dataUrl = 'data:image/jpeg;base64,' + imageString;
       this.imageSrc = dataUrl;
@@ -109,13 +115,17 @@ export class MainComponent {
       this.imageCoords[0] = event.clientX;
       this.imageCoords[1] = event.clientY;
       this.imageVisible = true;
-    }, 500);
+    }, delay);
   }
 
   public onMouseLeave() {
-    clearTimeout(this.timer);
+    clearTimeout(this._enterTimer);
+    this._leaveTimer = setTimeout(() => {
+      this._debounce = false;
+    }, 300);
     this.imageVisible = false;
   }
+
 
   public onMouseMove(event: MouseEvent) {
     this.imageCoords[0] = event.clientX;
