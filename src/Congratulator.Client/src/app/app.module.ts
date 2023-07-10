@@ -18,7 +18,7 @@ import { AddComponent } from './add/add.component';
     AppComponent,
     EditComponent,
     MainComponent,
-    AddComponent
+    AddComponent,
   ],
   imports: [
     BrowserModule,

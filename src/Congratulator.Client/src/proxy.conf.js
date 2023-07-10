@@ -5,6 +5,13 @@ const PROXY_CONFIG = [
     ],
     target: "https://localhost:7265",
     secure: false
+  },
+  {
+    context: [
+      "/Congratulator/api/image",
+    ],
+    target: "https://localhost:7265",
+    secure: false
   }
 ];
 

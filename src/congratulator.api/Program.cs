@@ -1,6 +1,7 @@
 using Congratulator.Core.Abstractions;
 using Congratulator.Core.Abstractions.Database;
 using Congratulator.Core.Services;
+using Congratulator.Infrastructure;
 using Congratulator.Infrastructure.Database;
 
 namespace Congratulator.Api
@@ -14,8 +15,10 @@ namespace Congratulator.Api
             // Add services to the container.
             builder.Services.AddControllers();
             // Implement Dependency Injection
-            builder.Services.AddSingleton<IBirthdayDateRepository, EntityFrameworkRepository>();
+            builder.Services.AddScoped<IBirthdayDateRepository, EntityFrameworkRepository>();
+            builder.Services.AddScoped<IImageRepository, EntityFrameworkRepository>();
             builder.Services.AddScoped<IBirthdayDateService, BirthdayDateService>();
+            builder.Services.AddScoped<IImageService, ImageService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

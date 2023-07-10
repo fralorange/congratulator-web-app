@@ -9,8 +9,13 @@ namespace Congratulator.Api.Controllers
     public class CongratulatorController : ControllerBase
     {
         private readonly IBirthdayDateService _dateService;
+        private readonly IImageService _imageService;
 
-        public CongratulatorController(IBirthdayDateService dateService) => _dateService = dateService;
+        public CongratulatorController(IBirthdayDateService dateService, IImageService imageService)
+        {
+            _dateService = dateService;
+            _imageService = imageService;
+        }
 
         [HttpGet]
         [Route("api/birthdaydate")]
@@ -33,15 +38,40 @@ namespace Congratulator.Api.Controllers
             return _dateService.GetBirthdayDateById(id);
         }
 
+        [HttpGet]
+        [Route("api/image")]
+        public ImageCollectionDto GetImages()
+        {
+            return _imageService.GetImages();
+        }
+
+        [HttpGet]
+        [Route("api/image/{id}")]
+        public ImageDto? GetImageById(int id)
+        {
+            return _imageService.GetImageById(id);
+        }
+
         [HttpPost]
         [Route("api/birthdaydate")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult AddBirthdayDate([FromBody] AddBirthdayDateDto addBirthdayDateDto)
         {
-            _dateService.AddBirthdayDate(addBirthdayDateDto);
+            int id = _dateService.AddBirthdayDate(addBirthdayDateDto);
 
-            return CreatedAtAction(nameof(GetBirthdayDateById), new { id = addBirthdayDateDto.Id }, addBirthdayDateDto);
+            return CreatedAtAction(nameof(GetBirthdayDateById), new { id }, new { id });
+        }
+
+        [HttpPost]
+        [Route("api/image")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult AddImage([FromBody] AddImageDto addImageDto)
+        {
+            _imageService.AddImage(addImageDto);
+
+            return CreatedAtAction(nameof(GetImageById), new { id = addImageDto.Id }, addImageDto);
         }
 
         [HttpDelete]
@@ -65,6 +95,18 @@ namespace Congratulator.Api.Controllers
                 return NotFound();
 
             _dateService.EditBirthdayDate(editedBirthdayDateDto);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("api/image/{id}")]
+        public IActionResult EditImage(int id, [FromBody] EditImageDto editedImageDto)
+        {
+            if (editedImageDto == null || id != editedImageDto.BirthdayId)
+                return BadRequest();
+
+            _imageService.EditImage(editedImageDto);
 
             return NoContent();
         }

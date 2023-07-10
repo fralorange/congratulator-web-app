@@ -32,7 +32,7 @@
       </tr>
     </thead>
     <tbody class="text-center">
-      <tr *ngFor="let birthdayDate of sortedDates">
+      <tr *ngFor="let birthdayDate of sortedDates" (mouseenter)="onMouseEnter($event, birthdayDate.id)" (mouseleave)="onMouseLeave()" (mousemove)="onMouseMove($event)">
         <td>{{ birthdayDate.id }}</td>
         <td>{{ birthdayDate.firstName }}</td>
         <td>{{ birthdayDate.lastName }}</td>
@@ -42,4 +42,5 @@
       </tr>
     </tbody>
   </table>
+  <img *ngIf="imageVisible" [src]="imageSrc" [style.left.px]="imageCoords[0]" [style.top.px]="imageCoords[1]">
 </div>
