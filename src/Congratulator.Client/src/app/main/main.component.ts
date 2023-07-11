@@ -6,6 +6,7 @@ import { BirthdayDateCollection } from '../core/birthday-date-collection.interfa
 import { Image } from '../core/image.interface';
 import { ImageCollection } from '../core/image-collection.interface';
 import { BirthdayMail } from '../core/birthday-mail.interface';
+import { compare } from '../shared/compare.function'
 
 @Component({
   selector: 'app-main',
@@ -178,8 +179,4 @@ export class MainComponent implements AfterViewInit {
       button.innerHTML = buttonText;
     }
   }
-}
-
-function compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
