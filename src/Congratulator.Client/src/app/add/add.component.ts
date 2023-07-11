@@ -16,12 +16,12 @@ export class AddComponent {
     firstName: '',
     lastName: '',
     birthDate: new Date()
-  }
+  };
   image: Image = {
     id: 0,
     birthdayId: 0,
     img: ''
-  }
+  };
   isFileSelected = false;
 
   constructor(protected _http: HttpClient, protected _router: Router) { }

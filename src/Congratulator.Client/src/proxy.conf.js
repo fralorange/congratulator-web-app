@@ -2,13 +2,8 @@ const PROXY_CONFIG = [
   {
     context: [
       "/Congratulator/api/birthdaydate",
-    ],
-    target: "https://localhost:7265",
-    secure: false
-  },
-  {
-    context: [
       "/Congratulator/api/image",
+      "/Congratulator/api/email"
     ],
     target: "https://localhost:7265",
     secure: false

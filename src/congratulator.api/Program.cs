@@ -1,8 +1,10 @@
 using Congratulator.Core.Abstractions;
 using Congratulator.Core.Abstractions.Database;
 using Congratulator.Core.Services;
-using Congratulator.Infrastructure;
 using Congratulator.Infrastructure.Database;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Microsoft.Extensions.Configuration;
 
 namespace Congratulator.Api
 {
@@ -15,10 +17,23 @@ namespace Congratulator.Api
             // Add services to the container.
             builder.Services.AddControllers();
             // Implement Dependency Injection
-            builder.Services.AddScoped<IBirthdayDateRepository, EntityFrameworkRepository>();
-            builder.Services.AddScoped<IImageRepository, EntityFrameworkRepository>();
-            builder.Services.AddScoped<IBirthdayDateService, BirthdayDateService>();
+            builder.Services.AddSingleton<IEmailDistributionService>(sp =>
+                new EmailDistributionService(
+                    builder.Configuration,
+                    sp.GetRequiredService<IBirthdayDateService>(),
+                    sp.GetRequiredService<IRecurringJobManager>()));
+            builder.Services.AddSingleton<IBirthdayDateRepository, EntityFrameworkRepository>();
+            builder.Services.AddSingleton<IImageRepository, EntityFrameworkRepository>();
+            builder.Services.AddTransient<IBirthdayDateService, BirthdayDateService>();
             builder.Services.AddScoped<IImageService, ImageService>();
+            // Add Hangfire
+            builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UsePostgreSqlStorage(builder.Configuration.GetConnectionString("Default")));
+            // Start Hangfire server
+            builder.Services.AddHangfireServer();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -30,7 +45,8 @@ namespace Congratulator.Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            } else
+            }
+            else
             {
                 app.UseDefaultFiles();
                 app.UseStaticFiles();
@@ -39,7 +55,6 @@ namespace Congratulator.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -10,11 +10,13 @@ namespace Congratulator.Api.Controllers
     {
         private readonly IBirthdayDateService _dateService;
         private readonly IImageService _imageService;
+        private readonly IEmailDistributionService _emailDistributionService;
 
-        public CongratulatorController(IBirthdayDateService dateService, IImageService imageService)
+        public CongratulatorController(IBirthdayDateService dateService, IImageService imageService, IEmailDistributionService emailDistributionService)
         {
             _dateService = dateService;
             _imageService = imageService;
+            _emailDistributionService = emailDistributionService;
         }
 
         [HttpGet]
@@ -74,6 +76,16 @@ namespace Congratulator.Api.Controllers
             return CreatedAtAction(nameof(GetImageById), new { id = addImageDto.Id }, addImageDto);
         }
 
+        [HttpPost]
+        [Route("api/email")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult StartEmailDistribution([FromBody] SendBirthdayMailDto sendBirthdayMailDto)
+        {
+            _emailDistributionService.ScheduleEmailTask(sendBirthdayMailDto);
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("api/birthdaydate/{id}")]
         public IActionResult RemoveBirthdayDate(int id)
@@ -82,6 +94,14 @@ namespace Congratulator.Api.Controllers
             if (!answer)
                 return NotFound();
             return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("api/email")]
+        public IActionResult CancelEmailDistribution()
+        {
+            _emailDistributionService.CancelEmailTask();
+            return Ok();
         }
 
         [HttpPut]

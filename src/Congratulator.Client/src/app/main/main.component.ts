@@ -1,31 +1,43 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { BirthdayDate } from '../core/birthday-date.interface';
 import { BirthdayDateCollection } from '../core/birthday-date-collection.interface';
 import { Image } from '../core/image.interface';
 import { ImageCollection } from '../core/image-collection.interface';
-import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
+import { BirthdayMail } from '../core/birthday-mail.interface';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements AfterViewInit {
+  @ViewChild('myInput') myInput!: ElementRef;
+  @ViewChild('myButton') myButton!: ElementRef;
   private readonly _apiUrl = 'Congratulator/api/';
   private _enterTimer: any;
   private _leaveTimer: any;
-  private _debounce: boolean = false;
+  private _debounce = false;
   public birthdayDates?: BirthdayDate[];
   public sortedDates?: BirthdayDate[];
   public images?: Image[];
-  public imageSrc: string = '';
+  public imageSrc = '';
   public imageVisible = false;
   public imageCoords: [number, number] = [0, 0];
+  public isReadOnly = false;
+  public buttonText = 'OK';
+  public birthdayMail: BirthdayMail = {
+    recipient: '',
+    subject: 'Upcoming Birthdays'
+  };
 
   constructor(private _http: HttpClient) {
     this.loadData('', true);
+  }
+
+  ngAfterViewInit() {
+    this.restoreFormState(this.myInput.nativeElement, this.myButton.nativeElement);
   }
 
   public loadData(attribute: string = '', image: boolean = false, callback?: () => void) {
@@ -130,6 +142,41 @@ export class MainComponent {
   public onMouseMove(event: MouseEvent) {
     this.imageCoords[0] = event.clientX;
     this.imageCoords[1] = event.clientY;
+  }
+
+  public onToggleInput(input: HTMLInputElement, button: HTMLButtonElement) {
+    if (input.value == '' || !input.value.includes('@'))
+      return;
+    if (!input.disabled) {
+      this.birthdayMail.recipient = input.value;
+      this._http.post<void>(this._apiUrl.concat('email'), this.birthdayMail).subscribe(() => { }
+        , error => {
+          console.log(error);
+        })
+    } else {
+      this._http.delete<void>(this._apiUrl.concat('email')).subscribe(() => { }
+        , error => {
+          console.log(error);
+        })
+    }
+    input.disabled = !input.disabled;
+    button.innerHTML = (input.disabled) ? 'Change' : 'OK';
+
+    localStorage.setItem('inputValue', input.value);
+    localStorage.setItem('inputDisabled', input.disabled.toString());
+    localStorage.setItem('buttonText', button.innerHTML);
+  }
+
+  public restoreFormState(input: HTMLInputElement, button: HTMLButtonElement) {
+    const inputValue = localStorage.getItem('inputValue');
+    const inputDisabled = localStorage.getItem('inputDisabled');
+    const buttonText = localStorage.getItem('buttonText');
+
+    if (inputValue !== null && inputDisabled !== null && buttonText !== null) {
+      input.value = inputValue;
+      input.disabled = inputDisabled === 'true';
+      button.innerHTML = buttonText;
+    }
   }
 }
 
