@@ -4,7 +4,6 @@ using Congratulator.Core.Services;
 using Congratulator.Infrastructure.Database;
 using Hangfire;
 using Hangfire.PostgreSql;
-using Microsoft.Extensions.Configuration;
 
 namespace Congratulator.Api
 {
