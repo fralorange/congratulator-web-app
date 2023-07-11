@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Congratulator.Infrastructure.Database
 {
-    public class EntityFrameworkRepository : IBirthdayDateRepository
+    public class EntityFrameworkRepository : IBirthdayDateRepository, IImageRepository
     {
         private readonly string _connectionString;
 
@@ -45,11 +45,39 @@ namespace Congratulator.Infrastructure.Database
             }
         }
 
+        public ImageCollection GetImages()
+        {
+            using (var db = new BirthdayDateContext(_connectionString))
+            {
+                return new ImageCollection()
+                {
+                    Images = db.Images.ToList()
+                };
+            }
+        }
+
+        public Image? GetImageById(int id) 
+        {
+            using (var db = new BirthdayDateContext(_connectionString))
+            {
+                return db.Images.FirstOrDefault(img => img.Id == id);
+            }
+        }
+
         public void AddBirthdayDate(BirthdayDate date)
         {
             using (var db = new BirthdayDateContext(_connectionString))
             {
                 db.Birthdays.Add(date);
+                db.SaveChanges();
+            }
+        }
+
+        public void AddImage(Image image)
+        {
+            using (var db = new BirthdayDateContext(_connectionString))
+            {
+                db.Images.Add(image);
                 db.SaveChanges();
             }
         }
@@ -62,6 +90,17 @@ namespace Congratulator.Infrastructure.Database
                 birthdayDate.FirstName = date.FirstName;
                 birthdayDate.LastName = date.LastName;
                 birthdayDate.BirthDate = date.BirthDate;
+
+                db.SaveChanges();
+            }
+        }
+
+        public void EditImage(Image image)
+        {
+            using (var db = new BirthdayDateContext(_connectionString))
+            {
+                var profileImage = db.Images.First(img => img.BirthdayId == image.BirthdayId);
+                profileImage.Img = image.Img;
 
                 db.SaveChanges();
             }

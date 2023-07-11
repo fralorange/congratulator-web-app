@@ -7,7 +7,7 @@ namespace Congratulator.Core.Abstractions
         BirthdayDateCollectionDto GetBirthdays();
         BirthdayDateCollectionDto GetComingBirthdays();
         BirthdayDateDto? GetBirthdayDateById(int id);
-        void AddBirthdayDate(AddBirthdayDateDto date);
+        int AddBirthdayDate(AddBirthdayDateDto date);
         bool RemoveBirthdayDate(int id);
         void EditBirthdayDate(EditBirthdayDateDto date);
     }

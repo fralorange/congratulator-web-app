@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MatSortModule } from '@angular/material/sort';
 
 import { AppComponent } from './app.component';
 import { EditComponent } from './edit/edit.component';
@@ -17,7 +18,7 @@ import { AddComponent } from './add/add.component';
     AppComponent,
     EditComponent,
     MainComponent,
-    AddComponent
+    AddComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,6 +26,7 @@ import { AddComponent } from './add/add.component';
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatSortModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot()
   ],

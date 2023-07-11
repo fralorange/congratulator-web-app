@@ -65,10 +65,10 @@ namespace Congratulator.Core.Services
             };
         }
 
-        public void AddBirthdayDate(AddBirthdayDateDto date)
+        public int AddBirthdayDate(AddBirthdayDateDto date)
         {
             if (_repository.GetBirthdays().Birthdays.Any(bd => bd.Id == date.Id))
-                return;
+                return 0;
             //date.Id = GetBirthdays().Birthdays.Max(bd => bd.Id) + 1;
             var newDate = new BirthdayDate()
             {
@@ -79,6 +79,7 @@ namespace Congratulator.Core.Services
             };
 
             _repository.AddBirthdayDate(newDate);
+            return newDate.Id;
         }
 
         public void EditBirthdayDate(EditBirthdayDateDto date)

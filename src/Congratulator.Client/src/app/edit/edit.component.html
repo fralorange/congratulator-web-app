@@ -36,8 +36,13 @@
       </div>
     </div>
 
+    <div class="my-2">
+      <label for="profileImage" class="form-label">Profile image</label>
+      <input class="form-control" type="file" accept="image/*" id="profileImage" (change)="onFileChange($event)">
+    </div>
+
     <div class="d-grid gap-6 col-3 mt-4">
-      <button type="submit" class="btn btn-outline-primary" [disabled]="name.errors?.['required']">Save</button>
+      <button type="submit" class="btn btn-outline-primary" [disabled]="name.errors?.['required'] || lastName.errors?.['required'] || date.errors?.['required'] || !isFileSelected">Save</button>
     </div>
   </form>
 </div>

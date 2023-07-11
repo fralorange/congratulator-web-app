@@ -5,26 +5,45 @@
     <button type="button" class="btn btn-outline-primary" [routerLink]="['/add']">Add new</button>
   </div>
 
-  <div class="form-check" *ngIf="birthdayDates">
+  <div class="form-check form-inline" *ngIf="birthdayDates">
+    <label class="form-check-label me-5">
+      <input class="form-check-input" type="radio" name="option" value="coming" (change)="onRadioboxchange($event)" />
+      Show upcoming
+    </label>
+    <label class="form-check-label me-5">
+      <input class="form-check-input" type="radio" name="option" value="belated" (change)="onRadioboxchange($event)" />
+      Show belated
+    </label>
     <label class="form-check-label">
-      <input class="form-check-input" type="checkbox" (change)="onCheckboxChange($event)" />
-      Show today's and upcoming birthdays
+      <input class="form-check-input" type="radio" name="option" value="all" (change)="onRadioboxchange($event)" checked />
+      Show all
     </label>
   </div>
 
-  <table class="table table-striped table-hover table-bordered" *ngIf="birthdayDates">
+  <div class="w-25 float-sm-start" [ngStyle]="{'visibility': birthdayDates ? 'visible' : 'hidden'}">
+    <div class="input-group mb-3 mt-1">
+      <div class="input-group-prepend">
+        <button #myButton class="btn btn-outline-secondary" type="button" (click)="onToggleInput(myInput, myButton)">OK</button>
+      </div>
+      <input #myInput type="email" class="form-control" placeholder="Input your e-mail adress" aria-label="" aria-describedby="basic-addon1">
+    </div>
+  </div>
+
+
+
+  <table class="table table-striped table-hover table-bordered" *ngIf="birthdayDates" matSort (matSortChange)="sortData($event)">
     <thead class="text-center">
       <tr>
-        <th scope="col">Id</th>
-        <th scope="col">First name</th>
-        <th scope="col">Last name</th>
-        <th scope="col">Birthday date</th>
+        <th scope="col" mat-sort-header="id">Id</th>
+        <th scope="col" mat-sort-header="firstName">First name</th>
+        <th scope="col" mat-sort-header="lastName">Last name</th>
+        <th scope="col" mat-sort-header="birthDate">Birthday date</th>
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody class="text-center">
-      <tr *ngFor="let birthdayDate of birthdayDates">
+      <tr *ngFor="let birthdayDate of sortedDates" (mouseenter)="onMouseEnter($event, birthdayDate.id)" (mouseleave)="onMouseLeave()" (mousemove)="onMouseMove($event)">
         <td>{{ birthdayDate.id }}</td>
         <td>{{ birthdayDate.firstName }}</td>
         <td>{{ birthdayDate.lastName }}</td>
@@ -34,4 +53,5 @@
       </tr>
     </tbody>
   </table>
+  <img *ngIf="imageVisible" [src]="imageSrc" [style.left.px]="imageCoords[0]" [style.top.px]="imageCoords[1]">
 </div>

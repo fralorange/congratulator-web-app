@@ -1,4 +1,4 @@
-CREATE TABLE Birthdays (
+CREATE TABLE public."Birthdays" (
 	"Id" serial PRIMARY KEY NOT NULL,
 	"FirstName" text NOT NULL,
 	"LastName" text NOT NULL,
